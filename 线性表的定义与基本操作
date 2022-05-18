@@ -1,0 +1,36 @@
+//值得注意的是代码中使用的并非C语言也并非C++, C语言中不存在引用
+//C语言中malloc是动态内存分配函数，C++中使用new关键字函数原型：void * malloc (unsigned int num_bytes); 参数：num_bytes 是无符号整型，用于表示分配的字节数。
+#include<stdio.h>
+#include<stdlib.h>
+
+#define initsize 10
+typedef struct {
+	int* data;
+	int maxsize;
+	int length;
+}seqlist;
+
+void initlist(seqlist &l) {
+	l.data = (int*)malloc(initsize * sizeof(int));
+	l.length = 0;
+	l.maxsize = initsize;
+}
+
+void increasesize(seqlist &l, int len) {
+	int* p = l.data;
+	l.data = (int*)malloc((l.maxsize + len) * sizeof(int));
+	for (int i = 0; i < l.length; i++)
+	{
+		l.data[i] = p[i];
+	}
+	l.maxsize = l.maxsize + len;
+	free(p);
+}
+
+int main()
+{
+	seqlist l;
+	initlist(l);
+	increasesize(l, 5);
+	return 0;
+}
